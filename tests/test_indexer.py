@@ -24,3 +24,18 @@ def test_add_page_to_index_tracks_frequency_and_positions():
             }
         }
     }
+
+def test_inverted_index():
+    pages = [
+        {
+            "url": "https://quotes.toscrape.com",
+            "text": "hello world hello"
+        }
+    ]
+
+    index = build_inverted_index(pages)
+    url = "https://quotes.toscrape.com"
+    assert index["hello"][url]["frequency"] == 2
+    assert index["hello"][url]["positions"] == [0, 2]
+    assert index["world"][url]["frequency"] == 1
+    assert index["world"][url]["positions"] == [1]
