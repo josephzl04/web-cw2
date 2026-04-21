@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 TARGET_URL = "https://quotes.toscrape.com/"
-
+#a
 def fetch_page(url: str) -> str:
     """Fetches contents from target url"""
     try:
