@@ -64,7 +64,6 @@ def load_index(file_path: str = "data/index.json") -> IndexType:
         return json.load(f)
 
 if __name__ == "__main__":
-    # Example usage
     sample_pages = [
         {
             "url": "https://quotes.toscrape.com/page/1/",
@@ -72,5 +71,4 @@ if __name__ == "__main__":
         }
     ]
     index = build_inverted_index(sample_pages)
-    save_index(index)
     print(index)

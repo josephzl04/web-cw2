@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 TARGET_URL = "https://quotes.toscrape.com/"
-#a
+
 def fetch_page(url: str) -> str:
     """Fetches contents from target url"""
     try:
@@ -18,21 +18,23 @@ def fetch_page(url: str) -> str:
 def extract_page_text(html: str) -> str:
     """Extract text content from HTML page"""
     soup = BeautifulSoup(html, 'html.parser')
-    
-    quotes = soup.select(".quote .text")
-    authors = soup.select(".quote .author")
-    tags = soup.select(".quote .tags")
+    quote_blocks = soup.select(".quote")
 
     parts = []
+    
+    for quote in quote_blocks:
+        text_element = quote.select_one(".text")
+        author_element = quote.select_one(".author")
+        tag_elements = quote.select(".tag")
 
-    for i in range(len(quotes)):
-        parts.append(quotes[i].get_text(strip=True))
+        if text_element:
+            parts.append(text_element.get_text(strip=True))
 
-        if i < len(authors):
-            parts.append(authors[i].get_text(strip=True))
+        if author_element:
+            parts.append(author_element.get_text(strip=True))
 
-        if i < len(tags):
-            parts.append(tags[i].get_text(" ", strip=True))
+        for tag in tag_elements:
+            parts.append(tag.get_text(strip=True))
 
     return " ".join(parts)
 
@@ -56,10 +58,9 @@ def crawl_quotes() -> list[dict]:
     while url:
         print(f"Crawling {url}...")
 
-        try:
-            html = fetch_page(url)
-        except requests.RequestException as e:
-            print(f"Error fetching {url}: {e}")
+        html = fetch_page(url)
+        if not html:
+            print(f"Stopping crawl because page fetch failed: {url}")
             break
 
         text = extract_page_text(html)

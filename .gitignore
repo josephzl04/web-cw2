@@ -2,3 +2,6 @@
 __pycache__/
 data/
 *.py[cod]
+.coverage
+.pytest_cache/
+htmlcov/

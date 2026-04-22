@@ -27,7 +27,7 @@ def test_get_index_entry_returns_none_for_missing_word():
             }
         }
     }
-    entry = get_index_entry(index, "world") is None
+    assert get_index_entry(index, "world") is None
 
 def test_find_pages_single_word():
     index = {
