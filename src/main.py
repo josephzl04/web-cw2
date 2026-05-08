@@ -1,10 +1,11 @@
 import sys
 
 from src.crawler import crawl_quotes
-from src.indexer import build_inverted_index, save_index, load_index
+from src.indexer import build_inverted_index, save_index, load_index, IndexType
 from src.search import find_pages, get_index_entry
 
 INDEX_FILE = "data/index.json"
+CURRENT_INDEX: IndexType | None = None
 
 def print_usage():
     print("Commands:")
@@ -15,28 +16,41 @@ def print_usage():
     print("  help")
     print("  exit")
 
+def get_active_index():
+    global CURRENT_INDEX
+    if CURRENT_INDEX is None:
+        try:
+            CURRENT_INDEX = load_index(INDEX_FILE)
+            print(f"Index loaded successfully from {INDEX_FILE}")
+        except FileNotFoundError as error:
+            print(f"Error loading index: {error}")
+            return None
+    return CURRENT_INDEX
+
 def handle_build():
     """Crawls website, builds index and saves to file"""
+    global CURRENT_INDEX
     print("Building index...")
     pages = crawl_quotes()
     index = build_inverted_index(pages)
     save_index(index, INDEX_FILE)
+    CURRENT_INDEX = index
     print(f"Index built and saved to {INDEX_FILE}")
 
 def handle_load():
     """Loads index"""
+    global CURRENT_INDEX
     try:
-        load_index(INDEX_FILE)
+        CURRENT_INDEX = load_index(INDEX_FILE)
         print(f"Index loaded successfully from {INDEX_FILE}")
     except FileNotFoundError as error:
         print(f"Error loading index: {error}")
 
 def handle_print(word: str):
     """Prints index entry for a word"""
-    try:
-        index = load_index(INDEX_FILE)
-    except FileNotFoundError as error:
-        print(f"Error loading index: {error}")
+    index = get_active_index()
+    if index is None:
+        print(f"No index is currently loaded. Use 'build' or 'load' first.")
         return
     entry = get_index_entry(index, word)
 
@@ -47,12 +61,12 @@ def handle_print(word: str):
 
 def handle_find(query: str):
     """Print all pages that contain all words in the query"""
-    try:
-        index = load_index(INDEX_FILE)
-    except FileNotFoundError as error:
-        print(f"Error loading index: {error}")
-        return
+    index = get_active_index()
 
+    if index is None:
+        print(f"No index is currently loaded. Use 'build' first.")
+        return
+    
     pages = find_pages(index, query)
     if pages:
         print(f"Pages matching '{query}':")
@@ -64,6 +78,7 @@ def handle_find(query: str):
 def execute_cmd(parts: list[str]):
     if not parts:
         return
+    
     command = parts[0].lower()
 
     if command == "build":
@@ -104,6 +119,7 @@ def run_cli():
         except (EOFError, KeyboardInterrupt):
             print("\nExiting...")
             break
+
         if not user_input:
             continue
 
