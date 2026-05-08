@@ -2,7 +2,7 @@ import sys
 
 from src.crawler import crawl_quotes
 from src.indexer import build_inverted_index, save_index, load_index, IndexType
-from src.search import find_pages, get_index_entry, find_phrase_pages
+from src.search import find_pages, get_index_entry, find_phrase_pages, find_ranked_pages
 
 INDEX_FILE = "data/index.json"
 CURRENT_INDEX: IndexType | None = None
@@ -14,6 +14,7 @@ def print_usage():
     print("  print <word>")
     print("  find <query>")
     print("  findphrase <phrase>")
+    print("  rank <query>")
     print("  help")
     print("  exit")
 
@@ -93,6 +94,23 @@ def handle_find_phrase(phrase):
     else:
         print(f"No pages found matching exact phrase: '{phrase}'")
     
+
+def handle_rank(query):
+    # advance feature 2 - print pages ranked by TF-IDF score
+    index = get_active_index()
+    if index is None:
+        print(f"No index is currently loaded. Use 'build' or 'load' first.")
+        return
+    
+    ranked_pages = find_ranked_pages(index, query)
+
+    if ranked_pages:
+        print(f"Pages ranked for '{query}':")
+        for page, score in ranked_pages:
+            print(f"  - {page} (score: {score:.3f})")
+    else:
+        print(f"No ranked results found for query: '{query}'")
+
 def execute_cmd(parts):
     if not parts:
         return
@@ -124,6 +142,13 @@ def execute_cmd(parts):
             return
         phrase = " ".join(parts[1:])
         handle_find_phrase(phrase)
+
+    elif command == "rank":
+        if len(parts) < 2:
+            print("Error: Please provide a query to rank.")
+            return
+        query = " ".join(parts[1:])
+        handle_rank(query)
 
     elif command == "help":
         print_usage()
