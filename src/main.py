@@ -2,7 +2,7 @@ import sys
 
 from src.crawler import crawl_quotes
 from src.indexer import build_inverted_index, save_index, load_index, IndexType
-from src.search import find_pages, get_index_entry
+from src.search import find_pages, get_index_entry, find_phrase_pages
 
 INDEX_FILE = "data/index.json"
 CURRENT_INDEX: IndexType | None = None
@@ -13,6 +13,7 @@ def print_usage():
     print("  load")
     print("  print <word>")
     print("  find <query>")
+    print("  findphrase <phrase>")
     print("  help")
     print("  exit")
 
@@ -46,7 +47,7 @@ def handle_load():
     except FileNotFoundError as error:
         print(f"Error loading index: {error}")
 
-def handle_print(word: str):
+def handle_print(word):
     """Prints index entry for a word"""
     index = get_active_index()
     if index is None:
@@ -59,15 +60,16 @@ def handle_print(word: str):
     else:
         print(f"Entry for word '{word}': {entry}")
 
-def handle_find(query: str):
+def handle_find(query):
     """Print all pages that contain all words in the query"""
     index = get_active_index()
 
     if index is None:
-        print(f"No index is currently loaded. Use 'build' first.")
+        print(f"No index is currently loaded. Use 'build' or 'load' first.")
         return
     
     pages = find_pages(index, query)
+
     if pages:
         print(f"Pages matching '{query}':")
         for page in pages:
@@ -75,7 +77,23 @@ def handle_find(query: str):
     else:
         print(f"No pages found matching query: '{query}'")
 
-def execute_cmd(parts: list[str]):
+def handle_find_phrase(phrase):
+    # advanced feature - print all pages that contain exact phrase
+    index = get_active_index()
+    
+    if index is None:
+        print(f"No index is currently loaded. Use 'build' or 'load' first.")
+        return
+    pages = find_phrase_pages(index, phrase)
+
+    if pages:
+        print(f"Pages matching exact phrase '{phrase}':")
+        for page in pages:
+            print(f"  - {page}")
+    else:
+        print(f"No pages found matching exact phrase: '{phrase}'")
+    
+def execute_cmd(parts):
     if not parts:
         return
     
@@ -99,6 +117,13 @@ def execute_cmd(parts: list[str]):
             return
         query = " ".join(parts[1:])
         handle_find(query)
+
+    elif command == "findphrase":
+        if len(parts) < 2:
+            print("Error: Please provide a phrase to find.")
+            return
+        phrase = " ".join(parts[1:])
+        handle_find_phrase(phrase)
 
     elif command == "help":
         print_usage()
