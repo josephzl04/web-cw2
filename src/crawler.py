@@ -39,6 +39,9 @@ def extract_page_text(html):
     return " ".join(parts)
 
 def get_next_page_url(html):
+    """
+    Return the next page URL, or None if there is no next page.
+    """
     soup = BeautifulSoup(html, 'html.parser')
     next_link = soup.select_one("li.next a")
 
@@ -52,6 +55,9 @@ def get_next_page_url(html):
     return TARGET_URL.rstrip("/") + href
 
 def crawl_quotes():
+    """
+    Crawl all quote pages and return a list of page dictionaries.
+    """
     url = TARGET_URL
     pages = []
 

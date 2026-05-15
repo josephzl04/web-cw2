@@ -3,7 +3,7 @@ from src.indexer import tokenize
 
 def get_index_entry(index, word):
     """
-    Returns index entry for one word or none if word is not found
+    Returns index entry for one word or none if word is not found.
     """
     tokens = tokenize(word)
     if not tokens:
@@ -13,7 +13,7 @@ def get_index_entry(index, word):
 
 def find_pages(index, query):
     """
-    Returns all page URLs that contain all words in the query
+    Returns all page URLs that contain all words in the query.
     """
     tokens = tokenize(query)
     if not tokens:
@@ -36,7 +36,7 @@ def find_pages(index, query):
 
 def find_phrase_pages(index, phrase):
     """
-    Returns all page URLs that contain the exact phrase
+    Returns all page URLs that contain the exact phrase.
     """
     words = tokenize(phrase)
     if not words:
@@ -70,7 +70,7 @@ def find_phrase_pages(index, phrase):
 
 def get_all_pages(index):
     """
-    Returns a sorted list of all page URLs in the index
+    Returns a sorted list of all page URLs in the index.
     """
     pages = set()
     for word_data in index.values():
@@ -79,7 +79,7 @@ def get_all_pages(index):
 
 def find_ranked_pages(index, query):
     """
-    Returns pages ranked by TF-IDF score for query
+    Returns pages ranked by TF-IDF score for query.
     """
     tokens = tokenize(query)
     if not tokens:
@@ -96,7 +96,6 @@ def find_ranked_pages(index, query):
             continue
     
         doc_freq = len(index[word])
-
 
         idf = math.log((total_docs + 1) / (doc_freq + 1)) + 1
 

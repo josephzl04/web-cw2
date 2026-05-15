@@ -30,7 +30,9 @@ def get_active_index():
     return CURRENT_INDEX
 
 def handle_build():
-    """Crawls website, builds index and saves to file"""
+    """
+    Crawls website, builds index and saves to file.
+    """
     global CURRENT_INDEX
     print("Building index...")
     pages = crawl_quotes()
@@ -40,7 +42,9 @@ def handle_build():
     print(f"Index built and saved to {INDEX_FILE}")
 
 def handle_load():
-    """Loads index"""
+    """
+    Loads index.
+    """
     global CURRENT_INDEX
     try:
         CURRENT_INDEX = load_index(INDEX_FILE)
@@ -49,7 +53,9 @@ def handle_load():
         print(f"Error loading index: {error}")
 
 def handle_print(word):
-    """Prints index entry for a word"""
+    """
+    Prints index entry for a word.
+    """
     index = get_active_index()
     if index is None:
         print(f"No index is currently loaded. Use 'build' or 'load' first.")
@@ -62,7 +68,9 @@ def handle_print(word):
         print(f"Entry for word '{word}': {entry}")
 
 def handle_find(query):
-    """Print all pages that contain all words in the query"""
+    """
+    Print all pages that contain all words in the query.
+    """
     index = get_active_index()
 
     if index is None:
@@ -79,7 +87,9 @@ def handle_find(query):
         print(f"No pages found matching query: '{query}'")
 
 def handle_find_phrase(phrase):
-    # advanced feature - print all pages that contain exact phrase
+    """
+    Advanced feature 1 - Print all pages that contain the exact phrase.
+    """
     index = get_active_index()
     
     if index is None:
@@ -96,7 +106,9 @@ def handle_find_phrase(phrase):
     
 
 def handle_rank(query):
-    # advance feature 2 - print pages ranked by TF-IDF score
+    """
+    Advanced feature 2 - Print pages ranked by TF-IDF score.
+    """
     index = get_active_index()
     if index is None:
         print(f"No index is currently loaded. Use 'build' or 'load' first.")

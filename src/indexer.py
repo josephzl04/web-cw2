@@ -7,7 +7,7 @@ IndexType = dict[str, dict[str, dict[str, Any]]]
 
 def tokenize(text):
     """
-    Makes it so search is not case sensitive
+    Convert text to lower case and split into searchable tokens.
     """
     return re.findall(r"[a-zA-Z0-9]+(?:['-][a-zA-Z0-9]+)*", text.lower())
 
