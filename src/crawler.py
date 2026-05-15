@@ -1,8 +1,12 @@
 import time
+from urllib.parse import urldefrag, urljoin, urlparse
+
 import requests
 from bs4 import BeautifulSoup
 
 TARGET_URL = "https://quotes.toscrape.com/"
+TARGET_DOMAIN = urlparse(TARGET_URL).netloc
+
 
 def fetch_page(url):
     """Fetches contents from target url"""
@@ -14,60 +18,97 @@ def fetch_page(url):
         print(f"Error fetching {url}: {e}")
         return ""
 
-
 def extract_page_text(html):
     """Extract text content from HTML page"""
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, "html.parser")
     quote_blocks = soup.select(".quote")
 
     parts = []
-    
-    for quote in quote_blocks:
-        text_element = quote.select_one(".text")
-        author_element = quote.select_one(".author")
-        tag_elements = quote.select(".tag")
 
-        if text_element:
-            parts.append(text_element.get_text(strip=True))
+    if quote_blocks:
+        for quote in quote_blocks:
+            text_element = quote.select_one(".text")
+            author_element = quote.select_one(".author")
+            tag_elements = quote.select(".tag")
 
-        if author_element:
-            parts.append(author_element.get_text(strip=True))
+            if text_element:
+                parts.append(text_element.get_text(strip=True))
 
-        for tag in tag_elements:
-            parts.append(tag.get_text(strip=True))
+            if author_element:
+                parts.append(author_element.get_text(strip=True))
 
-    return " ".join(parts)
+            for tag in tag_elements:
+                parts.append(tag.get_text(strip=True))
 
-def get_next_page_url(html):
+        return " ".join(parts)
+
+    for unwanted in soup(["script", "style"]):
+        unwanted.decompose()
+
+    return soup.get_text(" ", strip=True)
+
+def normalise_internal_url(current_url, href):
     """
-    Return the next page URL, or None if there is no next page.
+    Convert a link into a full internal URL, or return None for external links.
     """
-    soup = BeautifulSoup(html, 'html.parser')
-    next_link = soup.select_one("li.next a")
-
-    if not next_link:
-        return None
-        
-    href = next_link.get("href")
     if not href:
         return None
 
-    return TARGET_URL.rstrip("/") + href
+    absolute_url = urljoin(current_url, href)
+    absolute_url, _ = urldefrag(absolute_url)
+
+    parsed_url = urlparse(absolute_url)
+
+    if parsed_url.scheme not in ("http", "https"):
+        return None
+
+    if parsed_url.netloc != TARGET_DOMAIN:
+        return None
+
+    return absolute_url
+
+
+def get_internal_links(html, current_url):
+    """
+    Return all internal links found on the current page.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    links = set()
+
+    for link in soup.select("a[href]"):
+        internal_url = normalise_internal_url(current_url, link.get("href"))
+
+        if internal_url:
+            links.add(internal_url)
+
+    return sorted(links)
+
 
 def crawl_quotes():
     """
-    Crawl all quote pages and return a list of page dictionaries.
+    Crawl all reachable internal pages and return a list of page dictionaries.
     """
-    url = TARGET_URL
     pages = []
+    visited = set()
+    to_visit = [TARGET_URL]
 
-    while url:
+    while to_visit:
+        url = to_visit.pop(0)
+
+        if url in visited:
+            continue
+
+        if visited:
+            time.sleep(6)
+
         print(f"Crawling {url}...")
 
+        visited.add(url)
         html = fetch_page(url)
+
         if not html:
-            print(f"Stopping crawl because page fetch failed: {url}")
-            break
+            print(f"Skipping page because page fetch failed: {url}")
+            continue
 
         text = extract_page_text(html)
 
@@ -76,13 +117,12 @@ def crawl_quotes():
             "text": text
         })
 
-        next_url = get_next_page_url(html)
+        for link in get_internal_links(html, url):
+            if link not in visited and link not in to_visit:
+                to_visit.append(link)
 
-        if next_url:
-            time.sleep(6)
-            
-        url = next_url
     return pages
+
 
 if __name__ == "__main__":
     pages = crawl_quotes()

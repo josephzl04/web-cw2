@@ -1,50 +1,5 @@
 import requests
-from src.crawler import TARGET_URL, crawl_quotes, fetch_page, get_next_page_url, extract_page_text
-
-def test_get_next_page_url():
-    html = """
-    <html>
-        <body>
-                <li class="next">
-                    <a href="/page/2/">Next</a>
-                </li>
-        </body>
-    </html>
-    """
-    assert get_next_page_url(html) == "https://quotes.toscrape.com/page/2/"
-
-def test_get_next_page_url_no_next_link():
-    html = """
-    <html>
-        <body>
-                <p>No next link</p>
-        </body>
-    </html>
-    """
-    assert get_next_page_url(html) is None
-
-def test_get_next_page_url_no_href():
-    html = """
-    <html>
-        <body>
-            <li class="next">
-                <a>Next</a>
-            </li>
-        </body>
-    </html>
-    """
-    assert get_next_page_url(html) is None
-
-def test_get_next_page_url_no_anchor():
-    html = """
-    <html>
-        <body>
-                <li class="next">
-                </li>
-        </body>
-    </html>
-    """
-    assert get_next_page_url(html) is None
+from src.crawler import TARGET_URL, crawl_quotes, fetch_page, get_internal_links, extract_page_text
 
 def test_extract_page_text():
     html = """
@@ -153,3 +108,36 @@ def test_crawl_quotes_stops_on_fetch_error(monkeypatch):
     assert len(pages) == 1
     assert pages[0]["url"] == TARGET_URL
     assert sleep_calls == [6]
+
+def test_get_internal_links_returns_only_same_domain_links():
+    html = """
+    <html>
+        <body>
+            <a href="/page/2/">Next</a>
+            <a href="/tag/love/">Love tag</a>
+            <a href="https://example.com/">External</a>
+        </body>
+    </html>
+    """
+
+    links = get_internal_links(html, TARGET_URL)
+
+    assert "https://quotes.toscrape.com/page/2/" in links
+    assert "https://quotes.toscrape.com/tag/love/" in links
+    assert "https://example.com/" not in links
+
+
+def test_extract_page_text_falls_back_to_general_text():
+    html = """
+    <html>
+        <body>
+            <h1>About page</h1>
+            <p>This page has no quote blocks.</p>
+        </body>
+    </html>
+    """
+
+    text = extract_page_text(html)
+
+    assert "About page" in text
+    assert "This page has no quote blocks." in text
