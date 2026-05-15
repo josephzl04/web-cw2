@@ -46,7 +46,7 @@ def find_phrase_pages(index, phrase):
         if word not in index:
             return []
     
-    # Pages must contain every word in the phrase
+    # pages must contain every word in the phrase
     matching_pages = set(index[words[0]].keys())
     for word in words[1:]:
         matching_pages &= set(index[word].keys())
