@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 TARGET_URL = "https://quotes.toscrape.com/"
 
-def fetch_page(url: str) -> str:
+def fetch_page(url):
     """Fetches contents from target url"""
     try:
         response = requests.get(url, timeout=10)
@@ -15,7 +15,7 @@ def fetch_page(url: str) -> str:
         return ""
 
 
-def extract_page_text(html: str) -> str:
+def extract_page_text(html):
     """Extract text content from HTML page"""
     soup = BeautifulSoup(html, 'html.parser')
     quote_blocks = soup.select(".quote")
@@ -38,7 +38,7 @@ def extract_page_text(html: str) -> str:
 
     return " ".join(parts)
 
-def get_next_page_url(html: str) -> str | None:
+def get_next_page_url(html):
     soup = BeautifulSoup(html, 'html.parser')
     next_link = soup.select_one("li.next a")
 
@@ -51,7 +51,7 @@ def get_next_page_url(html: str) -> str | None:
 
     return TARGET_URL.rstrip("/") + href
 
-def crawl_quotes() -> list[dict]:
+def crawl_quotes():
     url = TARGET_URL
     pages = []
 

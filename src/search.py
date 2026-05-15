@@ -1,5 +1,4 @@
 import math
-from logging import log
 from src.indexer import tokenize
 
 def get_index_entry(index, word):

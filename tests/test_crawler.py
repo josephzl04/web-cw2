@@ -97,7 +97,7 @@ def test_crawl_quotes_respects_politeness_window(monkeypatch):
             <div class="quote">
                 <span class="text">"Second quote"</span>
                 <span class="author">Second author</span>
-                <a class="tag">truth</a>
+                <a class="tag">Second tag</a>
             </div>
         </body>
     </html>

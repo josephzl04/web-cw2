@@ -5,13 +5,13 @@ from typing import Any
 
 IndexType = dict[str, dict[str, dict[str, Any]]]
 
-def tokenize(text: str) -> list[str]:
+def tokenize(text):
     """
     Makes it so search is not case sensitive
     """
     return re.findall(r"[a-zA-Z0-9]+(?:['-][a-zA-Z0-9]+)*", text.lower())
 
-def add_page_to_index(index: IndexType, url: str, page_text: str) -> None:
+def add_page_to_index(index, url, page_text):
     """
     Adds a page to the inverted index. If page exists, then update.
     For each token store frequency and position.
@@ -31,7 +31,7 @@ def add_page_to_index(index: IndexType, url: str, page_text: str) -> None:
         index[word][url]["frequency"] += 1
         index[word][url]["positions"].append(position)
 
-def build_inverted_index(pages: list[dict[str, str]]) -> IndexType:
+def build_inverted_index(pages):
     """
     Build an inverted index from list of crawled pages.
     """
@@ -42,7 +42,7 @@ def build_inverted_index(pages: list[dict[str, str]]) -> IndexType:
         add_page_to_index(index, url, text)
     return index
 
-def save_index(index: IndexType, file_path: str = "data/index.json") -> None:
+def save_index(index, file_path):
     """
     Save the inverted index to a JSON file.
     """
@@ -52,7 +52,7 @@ def save_index(index: IndexType, file_path: str = "data/index.json") -> None:
     with path.open("w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, indent=2)
 
-def load_index(file_path: str = "data/index.json") -> IndexType:
+def load_index(file_path):
     """
     Load the inverted index from a JSON file.
     """
