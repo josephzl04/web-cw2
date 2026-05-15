@@ -155,10 +155,19 @@ Input:
 Output:
 ```
 Building index...
+Building index...
 Crawling https://quotes.toscrape.com/...
+Crawling https://quotes.toscrape.com/author/Albert-Einstein...
+Crawling https://quotes.toscrape.com/author/Andre-Gide...
+Crawling https://quotes.toscrape.com/author/Eleanor-Roosevelt...
+Crawling https://quotes.toscrape.com/author/J-K-Rowling...
+Crawling https://quotes.toscrape.com/author/Jane-Austen...
+Crawling https://quotes.toscrape.com/author/Marilyn-Monroe...
+Crawling https://quotes.toscrape.com/author/Steve-Martin...
+Crawling https://quotes.toscrape.com/author/Thomas-A-Edison...
+Crawling https://quotes.toscrape.com/login...
 Crawling https://quotes.toscrape.com/page/2/...
 ...
-Crawling https://quotes.toscrape.com/page/10/...
 Index built and saved to data/index.json
 ```
 
@@ -186,7 +195,7 @@ Input:
 Output:
 ```
 Index loaded successfully from data/index.json
-Entry for word 'good': {'https://quotes.toscrape.com/': {'frequency': 1, 'positions': [94]}, 'https://quotes.toscrape.com/page/2/': {'frequency': 3, 'positions': [22, 512, 514]}, 'https://quotes.toscrape.com/page/3/': {'frequency': 1, 'positions': [262]}, 'https://quotes.toscrape.com/page/6/': {'frequency': 1, 'positions': [47]}, 'https://quotes.toscrape.com/page/7/': {'frequency': 2, 'positions': [26, 236]}, 'https://quotes.toscrape.com/page/9/': {'frequency': 1, 'positions': [69]}}
+Entry for word 'good': {'https://quotes.toscrape.com/': {'frequency': 1, 'positions': [94]}, 'https://quotes.toscrape.com/author/Albert-Einstein': {'frequency': 2, 'positions': [137, 195]}, 'https://quotes.toscrape.com/author/J-K-Rowling': {'frequency': 1, 'positions': [634]}, 'https://quotes.toscrape.com/page/2/': {'frequency': 3, 'positions': [22, 512, 514]}, 'https://quotes.toscrape.com/tag/aliteracy/page/1/': {'frequency': 1, 'positions': [13]}, 'https://quotes.toscrape.com/tag/books/': {'frequency': 3, 'positions': [13, 25, 27]}, 'https://quotes.toscrape.com/tag/books/page/1/': {'frequency': 3, 'positions': [13, 25, 27]}, 'https://quotes.toscrape.com/tag/classic/page/1/': {'frequency': 1, 'positions': [13]}, 'https://quotes.toscrape.com/tag/friends/': {'frequency': 3, 'positions': [22, 234, 236]}, 'https://quotes.toscrape.com/tag/friendship/': {'frequency': 2, 'positions': [24, 26]}, 'https://quotes.toscrape.com/tag/humor/': {'frequency': 1, 'positions': [13]}, 'https://quotes.toscrape.com/tag/humor/page/1/': {'frequency': 1, 'positions': [13]}, 'https://quotes.toscrape.com/tag/inspirational/': {'frequency': 1, 'positions': [95]}, 'https://quotes.toscrape.com/tag/inspirational/page/1/': {'frequency': 1, 'positions': [95]}, 'https://quotes.toscrape.com/tag/life/': {'frequency': 3, 'positions': [78, 288, 290]}, 'https://quotes.toscrape.com/tag/life/page/1/': {'frequency': 3, 'positions': [78, 288, 290]}, 'https://quotes.toscrape.com/tag/love/': {'frequency': 1, 'positions': [45]}, 'https://quotes.toscrape.com/tag/love/page/1/': {'frequency': 1, 'positions': [45]}, 'https://quotes.toscrape.com/page/1/': {'frequency': 1, 'positions': [94]}, 'https://quotes.toscrape.com/page/3/': {'frequency': 1, 'positions': [262]}, 'https://quotes.toscrape.com/tag/contentment/page/1/': {'frequency': 2, 'positions': [0, 2]}, 'https://quotes.toscrape.com/tag/friends/page/1/': {'frequency': 3, 'positions': [22, 234, 236]}, 'https://quotes.toscrape.com/tag/friendship/page/1/': {'frequency': 2, 'positions': [24, 26]}, 'https://quotes.toscrape.com/tag/heartbreak/page/1/': {'frequency': 1, 'positions': [22]}, 'https://quotes.toscrape.com/tag/sisters/page/1/': {'frequency': 1, 'positions': [22]}, 'https://quotes.toscrape.com/tag/writing/page/1/': {'frequency': 1, 'positions': [18]}, 'https://quotes.toscrape.com/author/Terry-Pratchett': {'frequency': 1, 'positions': [135]}, 'https://quotes.toscrape.com/author/George-Eliot': {'frequency': 1, 'positions': [61]}, 'https://quotes.toscrape.com/author/Ralph-Waldo-Emerson': {'frequency': 1, 'positions': [169]}, 'https://quotes.toscrape.com/tag/attributed-no-source/page/1/': {'frequency': 1, 'positions': [36]}, 'https://quotes.toscrape.com/tag/music/page/1/': {'frequency': 1, 'positions': [1]}, 'https://quotes.toscrape.com/tag/good/page/1/': {'frequency': 1, 'positions': [18]}, 'https://quotes.toscrape.com/page/6/': {'frequency': 1, 'positions': [47]}, 'https://quotes.toscrape.com/page/7/': {'frequency': 2, 'positions': [26, 236]}, 'https://quotes.toscrape.com/author/J-R-R-Tolkien': {'frequency': 1, 'positions': [434]}, 'https://quotes.toscrape.com/tag/alcohol/page/1/': {'frequency': 1, 'positions': [26]}, 'https://quotes.toscrape.com/page/9/': {'frequency': 1, 'positions': [69]}, 'https://quotes.toscrape.com/tag/integrity/page/1/': {'frequency': 1, 'positions': [29]}}
 ```
 
 ### `find <query>`
@@ -200,8 +209,25 @@ Input:
 Output:
 ```
 Pages matching 'good friends':
+  - https://quotes.toscrape.com/author/George-Eliot
+  - https://quotes.toscrape.com/author/J-K-Rowling
   - https://quotes.toscrape.com/page/2/
   - https://quotes.toscrape.com/page/6/
+  - https://quotes.toscrape.com/tag/books/
+  - https://quotes.toscrape.com/tag/books/page/1/
+  - https://quotes.toscrape.com/tag/contentment/page/1/
+  - https://quotes.toscrape.com/tag/friends/
+  - https://quotes.toscrape.com/tag/friends/page/1/
+  - https://quotes.toscrape.com/tag/friendship/
+  - https://quotes.toscrape.com/tag/friendship/page/1/
+  - https://quotes.toscrape.com/tag/heartbreak/page/1/
+  - https://quotes.toscrape.com/tag/inspirational/
+  - https://quotes.toscrape.com/tag/inspirational/page/1/
+  - https://quotes.toscrape.com/tag/life/
+  - https://quotes.toscrape.com/tag/life/page/1/
+  - https://quotes.toscrape.com/tag/love/
+  - https://quotes.toscrape.com/tag/love/page/1/
+  - https://quotes.toscrape.com/tag/sisters/page/1/
 ```
 
 ### `findphrase <phrase>`
@@ -216,6 +242,15 @@ Output:
 ```
 Pages matching exact phrase 'good friends':
   - https://quotes.toscrape.com/page/2/
+  - https://quotes.toscrape.com/tag/books/
+  - https://quotes.toscrape.com/tag/books/page/1/
+  - https://quotes.toscrape.com/tag/contentment/page/1/
+  - https://quotes.toscrape.com/tag/friends/
+  - https://quotes.toscrape.com/tag/friends/page/1/
+  - https://quotes.toscrape.com/tag/friendship/
+  - https://quotes.toscrape.com/tag/friendship/page/1/
+  - https://quotes.toscrape.com/tag/life/
+  - https://quotes.toscrape.com/tag/life/page/1/
 ```
 
 ### `rank <query>`
@@ -230,12 +265,50 @@ Input:
 Output:
 ```
 Pages ranked for 'good friends':
-  - https://quotes.toscrape.com/page/2/ (score: 22.750)
-  - https://quotes.toscrape.com/page/6/ (score: 6.051)
-  - https://quotes.toscrape.com/page/7/ (score: 2.904)
-  - https://quotes.toscrape.com/ (score: 1.452)
-  - https://quotes.toscrape.com/page/3/ (score: 1.452)
-  - https://quotes.toscrape.com/page/9/ (score: 1.452)
+  - https://quotes.toscrape.com/tag/friends/ (score: 36.134)
+  - https://quotes.toscrape.com/tag/friends/page/1/ (score: 36.134)
+  - https://quotes.toscrape.com/page/2/ (score: 33.022)
+  - https://quotes.toscrape.com/tag/life/ (score: 26.796)
+  - https://quotes.toscrape.com/tag/life/page/1/ (score: 26.796)
+  - https://quotes.toscrape.com/tag/love/ (score: 18.270)
+  - https://quotes.toscrape.com/tag/love/page/1/ (score: 18.270)
+  - https://quotes.toscrape.com/tag/books/ (score: 17.459)
+  - https://quotes.toscrape.com/tag/books/page/1/ (score: 17.459)
+  - https://quotes.toscrape.com/tag/heartbreak/page/1/ (score: 15.157)
+  - https://quotes.toscrape.com/tag/inspirational/ (score: 15.157)
+  - https://quotes.toscrape.com/tag/inspirational/page/1/ (score: 15.157)
+  - https://quotes.toscrape.com/tag/sisters/page/1/ (score: 15.157)
+  - https://quotes.toscrape.com/tag/friendship/ (score: 14.752)
+  - https://quotes.toscrape.com/tag/friendship/page/1/ (score: 14.752)
+  - https://quotes.toscrape.com/tag/contentment/page/1/ (score: 11.639)
+  - https://quotes.toscrape.com/page/6/ (score: 8.932)
+  - https://quotes.toscrape.com/tag/courage/page/1/ (score: 6.225)
+  - https://quotes.toscrape.com/author/George-Eliot (score: 5.820)
+  - https://quotes.toscrape.com/author/J-K-Rowling (score: 5.820)
+  - https://quotes.toscrape.com/author/Albert-Einstein (score: 5.414)
+  - https://quotes.toscrape.com/page/7/ (score: 5.414)
+  - https://quotes.toscrape.com/author/Douglas-Adams (score: 3.113)
+  - https://quotes.toscrape.com/author/Harper-Lee (score: 3.113)
+  - https://quotes.toscrape.com/author/Madeleine-LEngle (score: 3.113)
+  - https://quotes.toscrape.com/author/Pablo-Neruda (score: 3.113)
+  - https://quotes.toscrape.com/tag/novelist-quotes/page/1/ (score: 3.113)
+  - https://quotes.toscrape.com/ (score: 2.707)
+  - https://quotes.toscrape.com/author/J-R-R-Tolkien (score: 2.707)
+  - https://quotes.toscrape.com/author/Ralph-Waldo-Emerson (score: 2.707)
+  - https://quotes.toscrape.com/author/Terry-Pratchett (score: 2.707)
+  - https://quotes.toscrape.com/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/page/3/ (score: 2.707)
+  - https://quotes.toscrape.com/page/9/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/alcohol/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/aliteracy/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/attributed-no-source/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/classic/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/good/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/humor/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/humor/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/integrity/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/music/page/1/ (score: 2.707)
+  - https://quotes.toscrape.com/tag/writing/page/1/ (score: 2.707)
 ```
 ## Testing instructions
 Run full test suite using
